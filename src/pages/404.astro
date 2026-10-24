@@ -1,0 +1,19 @@
+---
+import Sheet from '../layouts/Sheet.astro';
+import RabbitGlyph from '../components/RabbitGlyph.astro';
+---
+
+<Sheet sheet="00" title="Wrong Tunnel" description="This tunnel doesn't go anywhere.">
+  <p class="label">Error 404</p>
+  <h1 class="lost">Wrong tunnel</h1>
+  <p class="lost__body">
+    This channel was never dug, or it has caved in. Head back to the <a href="/">element table</a>.
+  </p>
+  <p class="lost__ears"><RabbitGlyph size={48} title="A rabbit, drawn as two busbars" /></p>
+</Sheet>
+
+<style>
+  .lost { font-size: clamp(2.2rem, 7vw, 4rem); letter-spacing: 0.08em; text-transform: uppercase; margin: 0.5rem 0 1.25rem; }
+  .lost__body { max-width: 34rem; }
+  .lost__ears { margin-top: 2.5rem; }
+</style>

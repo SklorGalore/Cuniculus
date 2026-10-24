@@ -1,0 +1,36 @@
+/*
+ * Cuniculus design tokens. Brand brief section 2.1.
+ * Every color is a real metal or one of its states. No gradients,
+ * no decorative color: if a color shows up, it means something.
+ */
+:root {
+  /* Materials */
+  --copper:    #B87333; /* primary accent: links, the Cu mark */
+  --verdigris: #4F8F86; /* secondary data, success / converged */
+  --tin:       #A3A9AF; /* rules, borders, muted text */
+  --bronze:    #8C6A3F; /* rare emphasis, Stannum pages (Cu + Sn) */
+  --tunnel:    #15140F; /* dark ground (current default) */
+  --vellum:    #F1EDE4; /* light ground, drawing sheets, text on dark */
+
+  /* Supporting values from the mood sheet */
+  --text-body:   #D9D4CA; /* body text on dark */
+  --hairline:    #4A4D50; /* 1px rules on dark */
+  --tin-bright:  #C9CED3; /* Sn glyph */
+  --bronze-glyph:#C9A06A; /* CuSn glyph */
+  --surface-1:   #2A2620; /* strata: surface */
+  --surface-2:   #1F1C17; /* strata: method */
+  --surface-3:   #0D0C09; /* strata: bedrock */
+
+  /* Two voices */
+  --font-inscription: 'Cinzel', 'Trajan Pro', Georgia, serif;
+  --font-sans: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --tracking-wordmark: 0.14em;
+  --tracking-label: 0.08em;
+
+  /* Grid */
+  --rule: 1px solid var(--hairline);
+  --rule-tin: 1px solid var(--tin);
+  --gutter: clamp(1rem, 4vw, 3.25rem);
+  --sheet-max: 76rem;
+}

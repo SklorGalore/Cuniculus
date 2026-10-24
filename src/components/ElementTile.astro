@@ -1,0 +1,122 @@
+---
+/**
+ * An element tile: atomic number, mass, symbol, name.
+ * The primary mark is the Cu tile (brief sections 2.6 and 3).
+ * Pass `empty` for an unclaimed tile: a hint at what's coming.
+ */
+type Metal = 'copper' | 'tin' | 'bronze' | 'verdigris';
+
+interface Props {
+  symbol?: string;
+  name?: string;
+  number?: number | string;
+  mass?: string;
+  metal?: Metal;
+  href?: string;
+  size?: 'sm' | 'md' | 'lg';
+  empty?: boolean;
+  id?: string;
+  label?: string; // accessible label override
+}
+
+const {
+  symbol = '',
+  name = '',
+  number = '',
+  mass = '',
+  metal = 'copper',
+  href,
+  size = 'md',
+  empty = false,
+  id,
+  label,
+} = Astro.props;
+
+// Long symbols (CuSn) need a smaller glyph to fit the tile.
+const long = symbol.length > 2;
+const Tag = href && !empty ? 'a' : 'div';
+const aria = empty
+  ? undefined
+  : (label ?? `${name}, element ${symbol}, number ${number}`);
+---
+
+<Tag
+  class:list={['tile', `tile--${size}`, empty ? 'tile--empty' : `tile--${metal}`]}
+  href={Tag === 'a' ? href : undefined}
+  aria-label={aria}
+  aria-hidden={empty ? 'true' : undefined}
+  data-element={id}
+>
+  {!empty && (
+    <>
+      <span class="tile__meta mono" aria-hidden="true">
+        <span>{number}</span>
+        <span>{mass}</span>
+      </span>
+      <span class:list={['tile__symbol', { 'tile__symbol--long': long }]} aria-hidden="true">{symbol}</span>
+      <span class="tile__name mono" aria-hidden="true">{name}</span>
+    </>
+  )}
+</Tag>
+
+<style>
+  .tile {
+    --tile-line: var(--copper);
+    --tile-glyph: var(--copper);
+    --tile-ground: transparent;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    aspect-ratio: 1;
+    padding: 0.7em 0.8em;
+    border: 1px solid var(--tile-line);
+    background: var(--tile-ground);
+    color: var(--vellum);
+    text-decoration: none;
+    font-size: 1rem;
+    transition: background-color 160ms ease;
+  }
+  .tile--sm { font-size: 0.55rem; padding: 0.45em 0.55em; }
+  .tile--lg { font-size: 1.15rem; }
+
+  .tile--copper    { --tile-line: var(--copper);    --tile-glyph: var(--copper); }
+  .tile--tin       { --tile-line: var(--tin);       --tile-glyph: var(--tin-bright); }
+  .tile--bronze    { --tile-line: var(--bronze-glyph); --tile-glyph: var(--bronze-glyph); --tile-ground: var(--surface-2); }
+  .tile--verdigris { --tile-line: var(--verdigris); --tile-glyph: var(--verdigris); }
+
+  .tile--empty {
+    border: 1px dashed var(--hairline);
+  }
+
+  a.tile:hover,
+  a.tile:focus-visible {
+    background: var(--surface-2);
+    text-decoration: none;
+  }
+
+  .tile__meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.6875em;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--tin);
+  }
+  .tile__symbol {
+    font-family: var(--font-inscription);
+    font-size: 3.4em;
+    line-height: 1;
+    color: var(--tile-glyph);
+  }
+  .tile__symbol--long { font-size: 2.3em; }
+  .tile__name {
+    font-size: 0.6875em;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-body);
+  }
+  .tile--sm .tile__meta,
+  .tile--sm .tile__name { display: none; }
+  .tile--sm .tile__symbol { font-size: 1.15rem; margin: auto; }
+</style>

@@ -1,0 +1,24 @@
+---
+/**
+ * The rabbit is found, not shown (brief section 2.6):
+ * two upright ears drawn as parallel busbars on a bus.
+ */
+interface Props { size?: number; title?: string }
+const { size = 14, title } = Astro.props;
+---
+
+<svg
+  class="rabbit"
+  width={size}
+  height={size}
+  viewBox="0 0 14 14"
+  role={title ? 'img' : undefined}
+  aria-hidden={title ? undefined : 'true'}
+  aria-label={title}
+>
+  <path d="M4.5 1v10M9.5 1v10M2 12.5h10" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="square" />
+</svg>
+
+<style>
+  .rabbit { display: inline-block; vertical-align: -0.15em; color: var(--copper); }
+</style>

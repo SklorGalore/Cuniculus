@@ -1,0 +1,94 @@
+---
+/**
+ * The periodic table is the navigation (brief section 4).
+ * Hovering or focusing a tile shows its Surface one-liner in the readout;
+ * clicking descends into the project. Pure CSS, no client JS.
+ */
+import { getCollection } from 'astro:content';
+import ElementTile from './ElementTile.astro';
+
+interface Props {
+  /** Total tiles, including empty ones that hint at future work. */
+  slots?: number;
+}
+const { slots = 12 } = Astro.props;
+
+const elements = (await getCollection('elements')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+const empties = Math.max(0, slots - elements.length);
+
+// Show the readout line matching the hovered or focused tile.
+const readoutCss = [
+  '.ptable:has(.tile[data-element]:is(:hover,:focus-visible)) .ptable__idle{display:none}',
+  ...elements.map(
+    ({ id }) =>
+      `.ptable:has(.tile[data-element="${id}"]:is(:hover,:focus-visible)) .ptable__line[data-for="${id}"]{display:block}`,
+  ),
+].join('');
+---
+
+<div class="ptable">
+  <ul class="ptable__grid" role="list">
+    {elements.map(({ id, data }) => (
+      <li>
+        <ElementTile
+          id={id}
+          symbol={data.symbol}
+          name={data.name}
+          number={data.number}
+          mass={data.mass}
+          metal={data.metal}
+          href={data.href}
+          label={`${data.name} (${data.symbol}): ${data.surface}`}
+        />
+      </li>
+    ))}
+    {Array.from({ length: empties }, () => (
+      <li aria-hidden="true"><ElementTile empty /></li>
+    ))}
+  </ul>
+
+  <div class="ptable__readout" aria-hidden="true">
+    <span class="label">Surface</span>
+    <p class="ptable__idle">Hover an element to read its surface. Select it to descend.</p>
+    {elements.map(({ id, data }) => (
+      <p class="ptable__line" data-for={id}>
+        <span class="mono ptable__sym">{data.symbol} · {data.number}</span>
+        {data.surface}
+      </p>
+    ))}
+  </div>
+</div>
+
+<style>
+  .ptable__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(9.5rem, 40vw), 1fr));
+    gap: 0.75rem;
+  }
+  .ptable__grid :global(.tile) { width: 100%; }
+
+  /* On phones, three columns and fewer empty tiles. */
+  @media (max-width: 34rem) {
+    .ptable__grid { grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+    .ptable__grid :global(.tile) { font-size: 0.62rem; }
+    .ptable__grid li:nth-child(n + 7) { display: none; }
+  }
+
+  .ptable__readout {
+    margin-top: 1.25rem;
+    padding-top: 0.9rem;
+    border-top: var(--rule);
+    min-height: 4.5rem;
+  }
+  .ptable__readout p { margin: 0.35rem 0 0; }
+  .ptable__idle { color: var(--tin); }
+  .ptable__line { display: none; }
+  .ptable__sym { color: var(--copper); margin-right: 0.75em; font-size: 0.875em; }
+</style>
+
+<Fragment set:html={`<style>${readoutCss}</style>`} />

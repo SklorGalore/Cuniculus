@@ -1,0 +1,54 @@
+---
+/**
+ * The bottom sheet strip: a compact title block on every page (brief 2.2).
+ * Sheet, revision and date come from src/data/sheets.ts.
+ */
+import RabbitGlyph from './RabbitGlyph.astro';
+import { lastSheet } from '../data/sheets';
+
+interface Props {
+  title: string;
+  sheet: string;
+  rev: string;
+  date: string;
+}
+const { title, sheet, rev, date } = Astro.props;
+---
+
+<footer class="strip">
+  <div class="strip__left">
+    <RabbitGlyph />
+    <span>{title}</span>
+    <span>drawn: s. coelho</span>
+  </div>
+  <dl class="strip__meta">
+    <div><dt class="visually-hidden">Sheet</dt><dd>sheet {sheet} of {lastSheet}</dd></div>
+    <div><dt class="visually-hidden">Revision</dt><dd>rev {rev.toLowerCase()}</dd></div>
+    <div><dt class="visually-hidden">Date</dt><dd><time datetime={date}>{date}</time></dd></div>
+  </dl>
+</footer>
+
+<style>
+  .strip {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem 3rem;
+    flex-wrap: wrap;
+    padding: 1.25rem 0 2.5rem;
+    border-top: var(--rule);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--label);
+    font-variant-numeric: tabular-nums;
+  }
+  .strip__left, .strip__meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.75rem;
+    margin: 0;
+  }
+  .strip__left { text-transform: lowercase; }
+  dd { margin: 0; }
+</style>

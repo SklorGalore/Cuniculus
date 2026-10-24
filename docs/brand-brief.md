@@ -38,32 +38,44 @@ Domains to check (**Open**): cuniculus.dev, cuniculus.engineering, plus a short 
 
 **The filter for every design decision:** *Would this belong on an engineering drawing or a Roman inscription? If neither, cut it.*
 
+### 2.0 Chosen direction: "Instrument" (v2 B) — Decided 2026-10-24
+v1 (Cinzel, Roman numerals, a headline Cu + Sn = Bronze equation, copper on warm brown) felt tacky and steampunk. It was replaced by a restrained, technical direction:
+- A neutral graphite background, not warm brown.
+- IBM Plex only. Headlines in Plex Sans Light, sentence case.
+- Copper is the **only** accent, used sparingly. Verdigris is for data and converged states only.
+- The bronze story lives in the About page and the element list, **not** in the hero.
+- The hero is a statement plus one small instrument figure, such as a solver convergence plot.
+- The grid motif is welcome but must not overwhelm. Use it **once per page**: a single one-line bus rule (tick, breaker box, copper node) as a section divider, plus the bottom sheet strip.
+
 ### 2.1 Materials, not colors
-Every color is a real metal or one of its states. Don't use gradients or decorative color. If a color shows up, it means something.
+Every color still traces to a metal or a drawing material. Don't use gradients or decorative color. If a color shows up, it means something.
 
 | Token | Hex | Role |
 |---|---|---|
-| Copper | `#B87333` | Primary accent: links, the Cu mark |
-| Verdigris | `#4F8F86` | Secondary data, success/converged states |
-| Tin | `#A3A9AF` | Rules, borders, muted text |
-| Bronze | `#8C6A3F` | Rare emphasis, Stannum pages (Cu + Sn) |
-| Tunnel | `#15140F` | Dark ground (current default) |
-| Vellum | `#F1EDE4` | Light ground, drawing-sheet pages, text on dark |
-
-Supporting values used in the mood sheet: body text on dark `#D9D4CA`, hairline on dark `#4A4D50`, bright tin for the Sn glyph `#C9CED3`, bronze glyph `#C9A06A`, surface layers `#2A2620`, `#1F1C17`, `#0D0C09`.
+| Graphite | `#111213` | Ground |
+| Paper | `#E8E7E3` | Primary text |
+| Text-muted | `#A4A5A1` | Body / descriptions |
+| Label | `#8E8F8C` | Nav, labels, mono metadata |
+| Hairline | `#2A2B2D` | Rules, borders |
+| Hairline-strong | `#4A4B4E` | Bus rule, outlined swatches |
+| Copper | `#C27A3E` | The single accent: "cu" in wordmark, element symbols, plotted data, hover (`#D08A4A`) |
+| Verdigris | `#6FA69D` | Data only: converged/OK states |
 
 ```css
 :root {
-  --copper:    #B87333;
-  --verdigris: #4F8F86;
-  --tin:       #A3A9AF;
-  --bronze:    #8C6A3F;
-  --tunnel:    #15140F;
-  --vellum:    #F1EDE4;
-  --text-body: #D9D4CA;
-  --hairline:  #4A4D50;
+  --graphite:        #111213;
+  --paper:           #E8E7E3;
+  --text-muted:      #A4A5A1;
+  --label:           #8E8F8C;
+  --hairline:        #2A2B2D;
+  --hairline-strong: #4A4B4E;
+  --copper:          #C27A3E;
+  --copper-hover:    #D08A4A;
+  --verdigris:       #6FA69D;
 }
 ```
+
+v1 values (retired, kept for reference): Copper `#B87333`, Verdigris `#4F8F86`, Tin `#A3A9AF`, Bronze `#8C6A3F`, Tunnel `#15140F`, Vellum `#F1EDE4`.
 
 ### 2.2 Every page is a drawing sheet
 - Each page gets a **title block** with the drawing title, the Cu mark, sheet number ("03 OF 07"), revision letter, date, and "DRAWN: S. COELHO".
@@ -81,10 +93,11 @@ Every project page has three strata:
 - Use 1px hairlines, a strict grid, and numbers in tabular monospace.
 - Use motion only where it explains something, like a solver iterating or flow animating along a line.
 
-### 2.5 Type with two voices
-- **Inscription voice:** a Roman-cut serif in caps or small caps for headings and the wordmark. **Cinzel** is the current stand-in (**Open**: it may read too classical; alternatives include a sharper serif or Cormorant small caps).
-- **Instrument voice:** **IBM Plex Sans** (body, weights 300–500) and **IBM Plex Mono** (data, labels, title blocks).
-- The wordmark is CUNICULUS in the inscription face with wide tracking (~0.14em).
+### 2.5 Type — Decided
+- **IBM Plex Sans:** headlines at weight 300, ~60px, tracking −0.02em, sentence case. Body at 300–400, 16–18px, line-height 1.6.
+- **IBM Plex Mono:** wordmark, navigation (lowercase), labels, data readouts, rev and sheet metadata.
+- **Wordmark:** lowercase `cuniculus` in Plex Mono 500, with the **cu** in copper and the rest in paper. The Cu reveal is built into the name.
+- The inscription serif (Cinzel) was dropped.
 
 ### 2.6 The rabbit is found, not shown
 The rabbit never appears in the primary identity. It lives in:
@@ -160,12 +173,15 @@ packages/
 
 ## 6. Artifacts from this session
 
-- **Mood sheet** (design canvas): https://claude.ai/artifact/MsCvfYRbjecgZMByU21Fkp. It shows the Cu + Sn = Bronze equation, the six materials, the two type voices, a sample title block, the depth strata, and the footer rabbit glyph. Skylar approved the direction.
+- **Design canvas:** https://claude.ai/artifact/MsCvfYRbjecgZMByU21Fkp. It holds three boards:
+  - v1 mood sheet (retired)
+  - v2 A "Drawing Set" (light, editorial; not chosen)
+  - **v2 B "Instrument" (chosen)**: home page with nav, hero statement, convergence figure, one-line bus rule, work index, and sheet strip
 
 ## 7. Open items
 
-1. Final inscription typeface (Cinzel vs. alternatives).
-2. Default ground: dark Tunnel or light Vellum drawing-sheet.
+1. ~~Inscription typeface~~ → Plex only (decided).
+2. ~~Default ground~~ → dark graphite (decided). A light theme is optional later.
 3. Domain availability and misspelling coverage.
 4. Primary mark refinement (Cu tile plus hidden rabbit detail).
 5. Confirm Astro, then scaffold the project.

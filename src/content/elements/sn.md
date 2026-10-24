@@ -4,7 +4,7 @@ name: Stannum
 number: 50
 mass: "118.71"
 metal: tin
-surface: A Rust power systems solver. Newton-Raphson power flow, validated against IEEE test cases, built for N-1 screening.
+surface: Power flow and contingency engine, written in Rust.
 href: /works/
 order: 2
 rev: A

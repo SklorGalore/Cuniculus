@@ -1,71 +1,39 @@
 ---
 import Sheet from '../layouts/Sheet.astro';
-import PeriodicTable from '../components/PeriodicTable.astro';
-import ElementTile from '../components/ElementTile.astro';
-import Divider from '../components/Divider.astro';
+import ConvergencePlot from '../components/ConvergencePlot.astro';
+import WorkIndex from '../components/WorkIndex.astro';
 ---
 
-<Sheet sheet="00" title="Index · Element Table">
-  <section class="hero" aria-labelledby="wordmark">
-    <h1 id="wordmark" class="wordmark">Cuniculus</h1>
-    <p class="pron mono">/kuːˈnɪk.jʊ.lʊs/ · Latin: rabbit; underground channel</p>
-    <p class="statement">Power systems engineering, built like infrastructure.</p>
+<Sheet sheet="00">
+  <section class="hero" aria-labelledby="statement">
+    <div class="hero__text">
+      <h1 id="statement">Power systems engineering, built like infrastructure.</h1>
+      <p class="lede">Transmission planning studies, automation, and the software behind them, by Skylar Coelho.</p>
+    </div>
+    <div class="hero__fig">
+      <ConvergencePlot />
+    </div>
   </section>
 
-  <Divider />
-
-  <section aria-labelledby="elements">
-    <div class="section-head">
-      <h2 id="elements">I · Elements</h2>
-      <span class="label">Every project is an element</span>
-    </div>
-    <PeriodicTable slots={12} />
-  </section>
-
-  <section class="alloy" aria-labelledby="alloy">
-    <div class="section-head">
-      <h2 id="alloy">II · The Alloy</h2>
-      <span class="label">Cu + Sn = bronze</span>
-    </div>
-    <div class="alloy__eq">
-      <ElementTile symbol="Cu" name="Cuniculus" number={29} mass="63.546" metal="copper" />
-      <span class="alloy__op" aria-hidden="true">+</span>
-      <ElementTile symbol="Sn" name="Stannum" number={50} mass="118.71" metal="tin" />
-      <span class="alloy__op" aria-hidden="true">=</span>
-      <ElementTile symbol="CuSn" name="Bronze" number="Alloy" mass="88 / 12" metal="bronze" label="Bronze, the alloy of copper and tin, 88 to 12" />
-    </div>
-    <p class="alloy__note">
-      The studio is copper, the conductor of the grid. Its first project, Stannum, is tin.
-      Together they make bronze.
-    </p>
-  </section>
+  <WorkIndex />
 </Sheet>
 
 <style>
-  .hero { text-align: right; padding-top: 1.5rem; }
-  .wordmark {
-    font-size: clamp(2.6rem, 9vw, 5.5rem);
-    letter-spacing: var(--tracking-wordmark);
-    text-transform: uppercase;
-    margin-right: calc(-1 * var(--tracking-wordmark));
+  .hero {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 1.5rem;
+    row-gap: 3rem;
+    align-items: end;
+    margin-bottom: clamp(4rem, 8vw, 6.5rem);
   }
-  .pron { margin: 0.75rem 0 0.25rem; font-size: 0.8125rem; color: var(--tin); }
-  .statement { font-size: clamp(1.05rem, 2.2vw, 1.3rem); color: var(--text-body); }
+  .hero__text { grid-column: span 7; display: grid; gap: 1.75rem; }
+  .hero__fig { grid-column: 9 / span 4; }
+  h1 { font-size: clamp(2.25rem, 4.6vw, 3.75rem); line-height: 1.08; }
+  .lede { margin: 0; max-width: 35rem; font-size: 1.125rem; color: var(--text-muted); }
 
-  .alloy { margin-top: 4rem; }
-  .alloy__eq {
-    display: flex;
-    align-items: center;
-    gap: 1.25rem;
-  }
-  .alloy__eq :global(.tile) { width: 9rem; flex: 0 1 9rem; }
-  .alloy__op { font-family: var(--font-sans); font-size: 1.5rem; color: var(--tin); }
-  .alloy__note { margin-top: 1.25rem; max-width: 38rem; color: var(--tin); }
-
-  @media (max-width: 34rem) {
-    .hero { text-align: left; }
-    .wordmark { margin-right: 0; }
-    .alloy__eq { gap: 0.5rem; }
-    .alloy__eq :global(.tile) { font-size: 0.62rem; width: 5.5rem; }
+  @media (max-width: 60rem) {
+    .hero__text, .hero__fig { grid-column: 1 / -1; }
+    .hero__fig { max-width: 28rem; }
   }
 </style>

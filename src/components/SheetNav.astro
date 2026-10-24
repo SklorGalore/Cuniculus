@@ -1,27 +1,23 @@
 ---
-/**
- * Site navigation drawn as a one-line diagram: the sheets hang off a
- * hairline bus, each behind a breaker. The current sheet's breaker is closed.
- */
+/** Top navigation: the wordmark and lowercase mono links (brief 2.0, 2.5). */
+import Wordmark from './Wordmark.astro';
 import { sheets } from '../data/sheets';
-import ElementTile from './ElementTile.astro';
 
 interface Props { current: string }
 const { current } = Astro.props;
+const order = ['02', '01', '03', '04']; // work, services, notes, about
+const links = order.map((n) => sheets.find((s) => s.number === n)!);
 ---
 
 <header class="nav">
-  <a class="nav__brand" href="/" aria-label="Cuniculus, sheet 00 index">
-    <ElementTile symbol="Cu" metal="copper" size="sm" />
-    <span class="nav__wordmark" aria-hidden="true">Cuniculus</span>
+  <a class="nav__brand" href="/" aria-label="Cuniculus, home">
+    <Wordmark />
   </a>
-  <nav aria-label="Drawing set">
+  <nav aria-label="Main">
     <ul role="list">
-      {sheets.map((s) => (
-        <li class:list={{ current: s.number === current }}>
-          <a href={s.href} aria-current={s.number === current ? 'page' : undefined}>
-            <span class="mono nav__num">{s.number}</span> {s.title}
-          </a>
+      {links.map((s) => (
+        <li>
+          <a href={s.href} aria-current={s.number === current ? 'page' : undefined}>{s.nav}</a>
         </li>
       ))}
     </ul>
@@ -33,65 +29,29 @@ const { current } = Astro.props;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1.5rem;
+    gap: 1rem 2rem;
     flex-wrap: wrap;
-    padding: 1.5rem 0 1.25rem;
+    padding: 3rem 0 0;
   }
-  .nav__brand {
-    display: flex;
-    align-items: center;
-    gap: 0.85rem;
-    color: var(--vellum);
-    text-decoration: none;
-  }
-  .nav__brand :global(.tile) { width: 2.4rem; }
-  .nav__wordmark {
-    font-family: var(--font-inscription);
-    font-size: 1.05rem;
-    letter-spacing: var(--tracking-wordmark);
-    text-transform: uppercase;
-  }
-
+  .nav__brand:hover :global(.wordmark) { color: var(--paper); }
   ul {
     list-style: none;
     margin: 0;
     padding: 0;
     display: flex;
     flex-wrap: wrap;
-    border-top: var(--rule); /* the bus */
+    gap: 0.25rem 2.25rem;
   }
-  li { position: relative; }
-  /* breaker: open square on the bus, closed (filled copper) when current */
-  li::before {
-    content: '';
-    position: absolute;
-    top: -5px;
-    left: 50%;
-    width: 9px;
-    height: 9px;
-    margin-left: -4.5px;
-    border: 1px solid var(--tin);
-    background: var(--tunnel);
-  }
-  li.current::before { background: var(--copper); border-color: var(--copper); }
-
   a {
-    display: block;
-    padding: 0.75rem 0.9rem 0;
     font-family: var(--font-mono);
-    font-size: 0.75rem;
-    letter-spacing: var(--tracking-label);
-    text-transform: uppercase;
-    color: var(--tin);
-    text-decoration: none;
+    font-size: 0.8125rem;
+    color: var(--label);
   }
-  a:hover, a[aria-current='page'] { color: var(--vellum); }
-  .nav__num { color: var(--copper); }
+  ul a:hover { color: var(--copper-hover); }
+  a[aria-current='page'] { color: var(--paper); }
 
-  @media (max-width: 40rem) {
-    nav, ul { width: 100%; }
-    ul { display: grid; grid-template-columns: repeat(5, 1fr); }
-    a { padding: 0.75rem 0 0; font-size: 0.625rem; text-align: center; }
-    .nav__num { display: block; }
+  @media (max-width: 34rem) {
+    .nav { padding-top: 1.75rem; }
+    ul { gap: 0.25rem 1.25rem; }
   }
 </style>

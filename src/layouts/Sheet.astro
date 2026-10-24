@@ -1,0 +1,79 @@
+---
+/**
+ * Every page is a drawing sheet (brief section 2.2):
+ * one-line-diagram navigation on top, title block at the foot.
+ */
+import '../styles/global.css';
+import SheetNav from '../components/SheetNav.astro';
+import TitleBlock from '../components/TitleBlock.astro';
+import RabbitGlyph from '../components/RabbitGlyph.astro';
+import { sheetFor } from '../data/sheets';
+
+interface Props {
+  /** Sheet number from src/data/sheets.ts, e.g. "00". */
+  sheet: string;
+  /** Drawing title for the title block; defaults to the sheet title. */
+  title?: string;
+  /** Override rev/date for pages outside the main set (e.g. 404). */
+  rev?: string;
+  date?: string;
+  description?: string;
+}
+
+const s = sheetFor(Astro.props.sheet);
+const title = Astro.props.title ?? s.title;
+const rev = Astro.props.rev ?? s.rev;
+const date = Astro.props.date ?? s.date;
+const description =
+  Astro.props.description ?? 'Cuniculus: power systems engineering, built like infrastructure.';
+const pageTitle = s.number === '00' && !Astro.props.title ? 'Cuniculus' : `${title} · Cuniculus`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#15140F" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    {Astro.site && <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />}
+  </head>
+  <body>
+    <div class="sheet">
+      <SheetNav current={s.number} />
+      <main id="main">
+        <slot />
+      </main>
+      <footer class="sheet__foot">
+        <TitleBlock title={title} sheet={s.number} rev={rev} date={date} />
+        <div class="sheet__colophon label">
+          <span>Filter: would it belong on an engineering drawing or a Roman inscription?</span>
+          <span><RabbitGlyph /> Cuniculus · Sheet {s.number} · Rev {rev}</span>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
+
+<style>
+  .sheet {
+    max-width: var(--sheet-max);
+    margin: 0 auto;
+    padding: 0 var(--gutter);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  main { flex: 1; padding: 2.5rem 0 4rem; }
+  .sheet__foot { padding-bottom: 2rem; }
+  .sheet__colophon {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    font-size: 0.625rem;
+  }
+</style>

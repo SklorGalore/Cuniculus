@@ -1,0 +1,27 @@
+---
+/** One-line-diagram divider: a hairline with two open breakers and an energized bus node. */
+---
+
+<svg class="divider" viewBox="0 0 1000 12" preserveAspectRatio="none" aria-hidden="true">
+  <line x1="0" y1="6" x2="1000" y2="6" stroke="var(--hairline)" stroke-width="1" vector-effect="non-scaling-stroke" />
+</svg>
+<div class="divider__glyphs" aria-hidden="true">
+  <span class="brk" style="left:25%"></span>
+  <span class="node" style="left:50%"></span>
+  <span class="brk" style="left:75%"></span>
+</div>
+
+<style>
+  .divider { display: block; width: 100%; height: 12px; margin: 2.5rem 0 0; }
+  .divider__glyphs { position: relative; height: 0; margin-bottom: 2.5rem; }
+  .divider__glyphs span { position: absolute; top: -12px; transform: translateX(-50%); }
+  .brk { width: 9px; height: 9px; margin-top: 1.5px; border: 1px solid var(--tin); background: var(--tunnel); }
+  .node {
+    width: 7px; height: 7px; margin-top: 2.5px; border-radius: 50%; background: var(--copper);
+  }
+  .node::before, .node::after {
+    content: ''; position: absolute; left: 3px; width: 1px; height: 5px; background: var(--copper);
+  }
+  .node::before { bottom: 6px; }
+  .node::after { top: 6px; }
+</style>

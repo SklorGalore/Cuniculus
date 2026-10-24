@@ -1,0 +1,17 @@
+---
+/** Lowercase `cuniculus` in Plex Mono 500, the "cu" in copper (brief 2.5). */
+interface Props { size?: string }
+const { size = '1.125rem' } = Astro.props;
+---
+
+<span class="wordmark" style={`font-size:${size}`}><span class="cu">cu</span>niculus</span>
+
+<style>
+  .wordmark {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--paper);
+  }
+  .cu { color: var(--copper); }
+</style>

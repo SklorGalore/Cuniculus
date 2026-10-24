@@ -1,0 +1,45 @@
+---
+/**
+ * The one grid motif allowed per page (brief 2.0): a single one-line bus rule
+ * with a tick, a breaker box, and a copper node. Use it once per page.
+ * Positions are percentages so it scales with the column.
+ */
+interface Props {
+  tick?: string;    // left offset of the tick
+  breaker?: string; // left offset of the breaker box
+  node?: string;    // left offset of the copper node
+}
+const { tick = '5%', breaker = '20%', node = '95%' } = Astro.props;
+---
+
+<div class="bus" aria-hidden="true">
+  <span class="bus__tick" style={`left:${tick}`}></span>
+  <span class="bus__brk" style={`left:${breaker}`}></span>
+  <span class="bus__node" style={`left:${node}`}></span>
+</div>
+
+<style>
+  .bus {
+    position: relative;
+    height: 14px;
+  }
+  .bus::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 7px;
+    border-top: 1px solid var(--hairline-strong);
+  }
+  .bus span { position: absolute; transform: translateX(-50%); }
+  .bus__tick { top: 1px; width: 1px; height: 12px; background: var(--hairline-strong); }
+  .bus__brk {
+    top: 3px; width: 9px; height: 9px;
+    background: var(--graphite);
+    border: 1px solid var(--label);
+  }
+  .bus__node {
+    top: 4px; width: 7px; height: 7px; border-radius: 50%;
+    background: var(--copper);
+  }
+</style>

@@ -6,20 +6,21 @@
 export interface Sheet {
   number: string;
   title: string;
+  nav: string; // lowercase mono nav label
   href: string;
   rev: string;
   date: string; // YYYY-MM-DD
 }
 
 export const sheets: Sheet[] = [
-  { number: '00', title: 'Index', href: '/', rev: 'A', date: '2026-10-24' },
-  { number: '01', title: 'Services', href: '/services/', rev: 'A', date: '2026-10-24' },
-  { number: '02', title: 'Works', href: '/works/', rev: 'A', date: '2026-10-24' },
-  { number: '03', title: 'Notes', href: '/notes/', rev: 'A', date: '2026-10-24' },
-  { number: '04', title: 'About', href: '/about/', rev: 'A', date: '2026-10-24' },
+  { number: '00', title: 'Index', nav: 'index', href: '/', rev: 'B', date: '2026-10-24' },
+  { number: '01', title: 'Services', nav: 'services', href: '/services/', rev: 'B', date: '2026-10-24' },
+  { number: '02', title: 'Work', nav: 'work', href: '/works/', rev: 'B', date: '2026-10-24' },
+  { number: '03', title: 'Notes', nav: 'notes', href: '/notes/', rev: 'B', date: '2026-10-24' },
+  { number: '04', title: 'About', nav: 'about', href: '/about/', rev: 'B', date: '2026-10-24' },
 ];
 
-/** Highest sheet number, for "03 OF 04". */
+/** Highest sheet number, for "sheet 03 of 04". */
 export const lastSheet = sheets[sheets.length - 1].number;
 
 export function sheetFor(number: string): Sheet {

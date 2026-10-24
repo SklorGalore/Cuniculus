@@ -1,0 +1,80 @@
+---
+/**
+ * A small instrument figure: Newton-Raphson power-flow mismatch per
+ * iteration on a log scale, with the tolerance line (brief 2.0, 2.4).
+ * Copper for the plotted data, verdigris only for the converged point.
+ * Values are a labelled sample until Stannum's WASM build feeds it live.
+ */
+interface Props {
+  caption?: string;
+  mismatch?: number[]; // max |ΔP| in pu, one per iteration
+  tolerance?: number;
+  sample?: boolean;
+}
+
+const {
+  caption = 'sn · ieee 3-bus',
+  mismatch = [1, 0.2, 4e-3, 1.6e-6, 3.2e-9],
+  tolerance = 1e-8,
+  sample = true,
+} = Astro.props;
+
+const W = 420, H = 120, PAD_X = 10, TOP = 10, BOTTOM = 110;
+const logs = mismatch.map((m) => Math.log10(m));
+const hi = Math.max(...logs);
+const lo = Math.min(...logs, Math.log10(tolerance));
+const y = (v: number) => TOP + ((hi - v) / (hi - lo)) * (BOTTOM - TOP);
+const x = (i: number) => PAD_X + (i * (W - 2 * PAD_X)) / (mismatch.length - 1);
+const pts = logs.map((v, i) => ({ x: x(i), y: y(v) }));
+const last = mismatch.length - 1;
+const converged = mismatch[last] <= tolerance;
+const fmt = (n: number) => (n >= 0.01 ? String(n) : n.toExponential(1).replace('.0e', 'e'));
+const label = `Newton-Raphson mismatch falling from ${fmt(mismatch[0])} to ${fmt(mismatch[last])} per unit over ${last} iterations`;
+---
+
+<figure class="plot">
+  <div class="plot__head"><span>{caption}</span>{sample && <span>sample</span>}</div>
+  <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" role="img" aria-label={label}>
+    <line x1="0" x2={W} y1={y(Math.log10(tolerance))} y2={y(Math.log10(tolerance))} class="plot__tol" vector-effect="non-scaling-stroke" />
+    <polyline points={pts.map((p) => `${p.x},${p.y}`).join(' ')} class="plot__line" vector-effect="non-scaling-stroke" />
+  </svg>
+  <div class="plot__dots" aria-hidden="true">
+    {pts.map((p, i) => (
+      <span
+        class:list={['plot__dot', { 'plot__dot--ok': converged && i === last }]}
+        style={`left:${(p.x / W) * 100}%;top:${(p.y / H) * 100}%`}
+      ></span>
+    ))}
+  </div>
+  <figcaption class="plot__foot">
+    <span class="muted">iter {last} · |ΔP| {fmt(mismatch[last])} pu</span>
+    {converged && <span class="ok">converged</span>}
+  </figcaption>
+</figure>
+
+<style>
+  .plot {
+    position: relative;
+    margin: 0;
+    border: var(--rule);
+    padding: 1.25rem 1.375rem;
+    display: grid;
+    gap: 0.875rem;
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+  .plot__head, .plot__foot { display: flex; justify-content: space-between; gap: 1rem; }
+  .plot__head { font-size: 0.75rem; color: var(--label); }
+  .plot__foot { font-size: 0.8125rem; }
+  .ok { color: var(--verdigris); }
+  svg { display: block; width: 100%; height: 8.125rem; overflow: visible; grid-area: 2 / 1; }
+  .plot__tol { stroke: #3A3B3E; stroke-width: 1; stroke-dasharray: 3 4; }
+  .plot__line { fill: none; stroke: var(--copper); stroke-width: 2; }
+  /* Dots live in HTML so they stay round when the SVG stretches. */
+  .plot__dots { position: relative; grid-area: 2 / 1; pointer-events: none; }
+  .plot__dot {
+    position: absolute; width: 6px; height: 6px; margin: -3px 0 0 -3px;
+    border-radius: 50%; background: var(--copper);
+  }
+  .plot__dot--ok { width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px; background: var(--verdigris); }
+</style>

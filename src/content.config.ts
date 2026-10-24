@@ -4,7 +4,7 @@ import { z } from 'astro/zod';
 
 /**
  * Elements: one entry per project (brief section 3).
- * The home page periodic table is built from this collection.
+ * The home page work index is built from this collection.
  */
 const elements = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/elements' }),
@@ -13,10 +13,11 @@ const elements = defineCollection({
     name: z.string(),
     number: z.number().int().positive(),
     mass: z.string(), // kept as a string so trailing digits survive ("118.71")
-    metal: z.enum(['copper', 'tin', 'bronze', 'verdigris']),
-    surface: z.string(), // the one-line Surface stratum, shown on hover
+    metal: z.enum(['copper', 'tin', 'bronze']),
+    kind: z.enum(['studio', 'project']).default('project'), // the studio itself stays out of the work index
+    surface: z.string(), // the one-line Surface stratum
     href: z.string().optional(),
-    order: z.number().int(), // position in the table
+    order: z.number().int(), // position in the work index
     rev: z.string().length(1),
     updated: z.coerce.date(),
   }),

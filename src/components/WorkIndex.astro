@@ -1,0 +1,88 @@
+---
+/**
+ * The work index: one row per element (brief 2.0, 3). Each row gives the
+ * symbol, name, Surface one-liner, and revision, and descends into the project.
+ * Carries the page's single bus rule under its header.
+ */
+import { getCollection } from 'astro:content';
+import BusRule from './BusRule.astro';
+
+interface Props {
+  /** Show a muted row hinting at the next element. */
+  showNext?: boolean;
+}
+const { showNext = true } = Astro.props;
+
+const projects = (await getCollection('elements', (e) => e.data.kind === 'project')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+---
+
+<section class="index" aria-labelledby="work-index">
+  <h2 id="work-index" class="visually-hidden">Work</h2>
+  <div class="row row--head" aria-hidden="true">
+    <span>el</span><span>name</span><span class="desc">description</span><span class="rev">rev</span>
+  </div>
+  <BusRule tick="4rem" breaker="16.5rem" node="calc(100% - 3.75rem)" />
+  <ul role="list">
+    {projects.map(({ data }) => (
+      <li>
+        <a class="row" href={data.href ?? '/works/'}>
+          <span class="sym">{data.symbol}</span>
+          <span class="name">{data.name}</span>
+          <span class="desc">{data.surface}</span>
+          <span class="rev"><span class="visually-hidden">revision </span>{data.rev}</span>
+        </a>
+      </li>
+    ))}
+    {showNext && (
+      <li class="row row--next">
+        <span aria-hidden="true">—</span>
+        <span class="name">Next element</span>
+        <span class="desc">A planning study or automation project, in preparation.</span>
+        <span class="rev" aria-hidden="true">—</span>
+      </li>
+    )}
+  </ul>
+</section>
+
+<style>
+  .index { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+  ul { list-style: none; margin: 0; padding: 0; }
+
+  .row {
+    display: grid;
+    grid-template-columns: 4rem 12.5rem minmax(0, 1fr) 7.5rem;
+    align-items: baseline;
+    padding: 1.25rem 0;
+    border-bottom: var(--rule);
+    color: var(--paper);
+  }
+  .row--head {
+    padding: 0 0 0.625rem;
+    border: 0;
+    font-size: 0.75rem;
+    color: var(--label);
+  }
+  .rev { text-align: right; font-size: 0.8125rem; color: var(--label); }
+  .row--head .rev { font-size: 0.75rem; }
+
+  .sym { font-size: 0.9375rem; color: var(--copper); }
+  .name { font-family: var(--font-sans); font-size: 1.25rem; font-weight: 400; }
+  .desc { font-family: var(--font-sans); font-size: 1rem; font-weight: 300; color: var(--text-muted); }
+  .row--head .desc { font-family: var(--font-mono); font-size: 0.75rem; color: var(--label); }
+
+  a.row:hover .name { color: var(--copper-hover); }
+
+  .row--next, .row--next .desc, .row--next .rev { color: var(--label); }
+  .row--next .name { font-weight: 300; }
+
+  @media (max-width: 48rem) {
+    .row { grid-template-columns: 3rem minmax(0, 1fr) 2.5rem; row-gap: 0.25rem; }
+    .row .desc { grid-column: 2 / 3; grid-row: 2; }
+    .row--head .desc { display: none; }
+    .rev { grid-column: 3; grid-row: 1; }
+    .index :global(.bus__tick) { left: 3rem !important; }
+    .index :global(.bus__brk) { left: 55% !important; }
+  }
+</style>

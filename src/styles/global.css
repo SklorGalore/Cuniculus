@@ -1,5 +1,3 @@
-@import '@fontsource/cinzel/400.css';
-@import '@fontsource/cinzel/500.css';
 @import '@fontsource/ibm-plex-sans/300.css';
 @import '@fontsource/ibm-plex-sans/400.css';
 @import '@fontsource/ibm-plex-sans/500.css';
@@ -10,8 +8,8 @@
 *, *::before, *::after { box-sizing: border-box; }
 
 html {
-  background: var(--tunnel);
-  color: var(--text-body);
+  background: var(--graphite);
+  color: var(--paper);
   color-scheme: dark;
   -webkit-text-size-adjust: 100%;
 }
@@ -23,51 +21,35 @@ body {
   font-weight: 300;
   font-size: 1.0625rem;
   line-height: 1.6;
-  background: var(--tunnel);
+  background: var(--graphite);
 }
 
+/* Headlines: Plex Sans Light, sentence case, tight tracking (brief 2.5) */
 h1, h2, h3 {
-  font-family: var(--font-inscription);
-  font-weight: 400;
-  color: var(--vellum);
-  line-height: 1.15;
+  font-family: var(--font-sans);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--paper);
   margin: 0;
 }
 
-a { color: var(--copper); text-decoration: none; }
-a:hover { text-decoration: underline; text-underline-offset: 0.2em; }
+a { color: var(--paper); text-decoration: none; transition: color 120ms ease; }
+a:hover { color: var(--copper-hover); }
 :focus-visible { outline: 1px solid var(--copper); outline-offset: 3px; }
 
 p { margin: 0 0 1em; }
 
-/* Instrument voice: labels, data, title blocks */
 .mono, code, kbd, samp {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
 }
 .label {
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
-  color: var(--tin);
+  font-size: 0.75rem;
+  color: var(--label);
 }
-
-/* Section heading: "I · MATERIALS" on the mood sheet */
-.section-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 1rem;
-  flex-wrap: wrap;
-  margin: 0 0 1.25rem;
-}
-.section-head h2 {
-  font-size: 1.25rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
+.muted { color: var(--text-muted); }
 
 .visually-hidden {
   position: absolute; width: 1px; height: 1px; overflow: hidden;

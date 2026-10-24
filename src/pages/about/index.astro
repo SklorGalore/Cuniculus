@@ -1,15 +1,61 @@
 ---
 import Sheet from '../../layouts/Sheet.astro';
+import BusRule from '../../components/BusRule.astro';
+import ElementTile from '../../components/ElementTile.astro';
 ---
 
-<Sheet sheet="04">
-  <h1 class="stub__title"><span class="mono">04</span> · About</h1>
-  <p class="stub__body">Cuniculus is the studio of Skylar Coelho. Bio, the bronze story, and how to engage.</p>
-  <p class="label">Sheet in preparation</p>
+<Sheet sheet="04" description="Cuniculus is Skylar Coelho's power systems engineering studio.">
+  <header class="head">
+    <p class="label">04 · about</p>
+    <h1>Cuniculus is the studio of Skylar Coelho.</h1>
+    <p class="lede">Bio and how to engage are in preparation.</p>
+  </header>
+
+  <BusRule />
+
+  <section class="story" aria-labelledby="name">
+    <h2 id="name">The name</h2>
+    <div class="story__body">
+      <p>
+        <em>Cuniculus</em> (koo-NIK-yoo-lus) is Latin for rabbit, and <em>coelho</em> is Portuguese for the same animal.
+        It also means an underground channel: Roman and Etruscan <em>cuniculi</em> were drainage and water tunnels,
+        ancient infrastructure engineering.
+      </p>
+      <p>
+        It shortens to Cu, copper, the conductor of the grid. The first project, Stannum, is Sn, tin.
+        Copper and tin make bronze, so the studio and its first project form an alloy.
+      </p>
+    </div>
+    <div class="alloy" role="group" aria-label="Copper plus tin makes bronze">
+      <ElementTile symbol="Cu" name="Cuniculus" number={29} mass="63.546" mark />
+      <span class="op" aria-hidden="true">+</span>
+      <ElementTile symbol="Sn" name="Stannum" number={50} mass="118.71" />
+      <span class="op" aria-hidden="true">=</span>
+      <ElementTile symbol="CuSn" name="Bronze" number="alloy" mass="88/12" label="Bronze, the alloy, 88 parts copper to 12 tin" />
+    </div>
+  </section>
 </Sheet>
 
 <style>
-  .stub__title { font-size: clamp(2rem, 6vw, 3.25rem); letter-spacing: 0.06em; }
-  .stub__title .mono { color: var(--copper); font-size: 0.6em; vertical-align: 0.25em; }
-  .stub__body { margin-top: 1.25rem; max-width: 38rem; }
+  .head { display: grid; gap: 1.25rem; margin-bottom: 4rem; }
+  .head .label { margin: 0; }
+  h1 { font-size: clamp(2rem, 4vw, 3rem); max-width: 40rem; }
+  .lede { margin: 0; color: var(--text-muted); }
+  .story {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: 1.5rem;
+    row-gap: 2rem;
+    margin-top: 3rem;
+  }
+  h2 { grid-column: span 4; font-size: 1.5rem; }
+  .story__body { grid-column: 5 / span 7; color: var(--text-muted); max-width: 38rem; }
+  .story__body em { color: var(--paper); font-style: italic; }
+  .alloy { grid-column: 5 / span 8; display: flex; align-items: center; gap: 1rem; }
+  .op { font-family: var(--font-mono); color: var(--label); }
+
+  @media (max-width: 48rem) {
+    h2, .story__body, .alloy { grid-column: 1 / -1; }
+    .alloy { gap: 0.5rem; }
+  }
 </style>
